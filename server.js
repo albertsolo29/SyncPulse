@@ -16,20 +16,6 @@ const port = process.env.PORT || 3000;
 const publicDir = path.join(__dirname, 'public');
 const uploadsDir = process.env.UPLOADS_DIR || path.join(os.tmpdir(), 'syncpulse-uploads');
 
-// Detect local network IP (for share links on other devices)
-function getLocalIp() {
-  const interfaces = os.networkInterfaces();
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name]) {
-      if (iface.family === 'IPv4' && !iface.internal) {
-        return iface.address;
-      }
-    }
-  }
-  return '127.0.0.1';
-}
-const LOCAL_IP = getLocalIp();
-
 // Ensure uploads directory exists in a writable location at runtime.
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -280,11 +266,6 @@ app.get('/health', (_req, res) => {
   res.json({ ok: true, roomsCount: rooms.size, timestamp: Date.now() });
 });
 
-// Server info — exposes local IP so clients can build correct share links
-app.get('/api/server-info', (_req, res) => {
-  res.json({ ip: LOCAL_IP, port });
-});
-
 io.on('connection', (socket) => {
   // High-precision NTP ping
   socket.on('ntp_ping', (clientTimestamp, ack) => {
@@ -452,6 +433,5 @@ io.on('connection', (socket) => {
 server.listen(port, '0.0.0.0', () => {
   console.log(`🎵 SyncPulse running on:`);
   console.log(`   Local:   http://localhost:${port}`);
-  console.log(`   Network: http://${LOCAL_IP}:${port}`);
-  console.log(`   SyncDrop: http://${LOCAL_IP}:${port}/stream.html`);
+  console.log(`   Stream:  http://localhost:${port}/stream.html`);
 });

@@ -69,18 +69,8 @@ let rttMs = 0;
 let hostBroadcastTimer = null;
 let lastRemoteState = null;
 let presetsList = [];
-let serverBaseUrl = window.location.origin; // updated after fetching local IP
+let serverBaseUrl = window.location.origin;
 let currentCoverUrl = '';
-
-// Fetch the server's LAN IP so share links work across devices
-fetch('/api/server-info')
-  .then(r => r.json())
-  .then(info => {
-    if (info?.ip && info?.port) {
-      serverBaseUrl = `http://${info.ip}:${info.port}`;
-    }
-  })
-  .catch(() => { /* fallback to window.location.origin */ });
 
 // Web Audio API State
 let audioCtx = null;

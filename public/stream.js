@@ -78,22 +78,7 @@ let clockOffsetMs     = 0;
 let hostBroadcastTimer = null;
 let currentTrackUrl   = '';
 let currentCoverUrl   = '';
-let serverBaseUrl     = window.location.origin; // updated with LAN IP
-
-// Fetch LAN IP so share links work on other devices
-fetch('/api/server-info')
-  .then(r => r.json())
-  .then(info => {
-    if (info?.ip && info?.port) {
-      serverBaseUrl = `http://${info.ip}:${info.port}`;
-      // Update share link if room already created
-      if (currentRoomCode && shareLinkInput) {
-        shareLinkInput.value = `${serverBaseUrl}/stream.html?room=${currentRoomCode}`;
-        qrImg.src = `/api/qrcode?text=${encodeURIComponent(shareLinkInput.value)}`;
-      }
-    }
-  })
-  .catch(() => {});
+let serverBaseUrl     = window.location.origin;
 
 // Web Audio
 let audioCtx       = null;
