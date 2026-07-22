@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Cross-device synced music player demo using Socket.IO and Option B mic proximity confirmation",
   "main": "server.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node server.js"
   },
