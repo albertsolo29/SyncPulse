@@ -13,6 +13,8 @@ const io = new Server(server, {
 });
 
 const port = process.env.PORT || 3000;
+const publicDir = path.join(__dirname, 'public');
+const uploadsDir = process.env.UPLOADS_DIR || path.join(os.tmpdir(), 'syncpulse-uploads');
 
 // Detect local network IP (for share links on other devices)
 function getLocalIp() {
@@ -28,8 +30,7 @@ function getLocalIp() {
 }
 const LOCAL_IP = getLocalIp();
 
-// Ensure uploads directory exists inside public/
-const uploadsDir = path.join(__dirname, 'public', 'uploads');
+// Ensure uploads directory exists in a writable location at runtime.
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
@@ -196,7 +197,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, 'public'), {
+app.use(express.static(publicDir, {
+  maxAge: '1d',
+  acceptRanges: true,
+  etag: true
+}));
+app.use('/uploads', express.static(uploadsDir, {
   maxAge: '1d',
   acceptRanges: true,
   etag: true
