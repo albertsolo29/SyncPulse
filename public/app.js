@@ -1,6 +1,7 @@
 // SyncPulse — Cross-Device Synced Music Player Client Logic
 
-const socket = io();
+const PROD_ORIGIN = 'https://sync-pulse-five.vercel.app';
+const socket = io(PROD_ORIGIN);
 
 // DOM Elements
 const connPill = document.getElementById('connPill');
@@ -69,7 +70,7 @@ let rttMs = 0;
 let hostBroadcastTimer = null;
 let lastRemoteState = null;
 let presetsList = [];
-let serverBaseUrl = window.location.origin;
+let serverBaseUrl = PROD_ORIGIN;
 let currentCoverUrl = '';
 
 // Web Audio API State

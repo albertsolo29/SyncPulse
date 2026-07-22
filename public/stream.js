@@ -1,7 +1,8 @@
 // SyncDrop — stream.js
 // Focused upload-and-stream page logic
 
-const socket = io();
+const PROD_ORIGIN = 'https://sync-pulse-five.vercel.app';
+const socket = io(PROD_ORIGIN);
 
 // ── Mode detection ──────────────────────────────────────────────
 const urlParams = new URLSearchParams(window.location.search);
@@ -78,7 +79,7 @@ let clockOffsetMs     = 0;
 let hostBroadcastTimer = null;
 let currentTrackUrl   = '';
 let currentCoverUrl   = '';
-let serverBaseUrl     = window.location.origin;
+let serverBaseUrl     = PROD_ORIGIN;
 
 // Web Audio
 let audioCtx       = null;
